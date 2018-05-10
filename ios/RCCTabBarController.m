@@ -145,16 +145,26 @@
         NSString *title = tabItemLayout[@"props"][@"title"];
         UIImage *iconImage = nil;
         id icon = tabItemLayout[@"props"][@"icon"];
+        NSNumber *disableIconTintString = tabItemLayout[@"props"][@"disableIconTint"];
+        BOOL disableIconTint = disableIconTintString ? [disableIconTintString boolValue] : NO;
         if (icon) {
-            iconImage = [RCTConvert UIImage:icon];
-            if (buttonColor) {
-                iconImage = [[self image:iconImage withColor:buttonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            if (disableIconTint) {
+                iconImage = [[RCTConvert UIImage:icon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];    
+            } else {
+                iconImage = [RCTConvert UIImage:icon];
+                if (buttonColor) {
+                    iconImage = [[self image:iconImage withColor:buttonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+                }
             }
         }
         UIImage *iconImageSelected = nil;
         id selectedIcon = tabItemLayout[@"props"][@"selectedIcon"];
         if (selectedIcon) {
-            iconImageSelected = [RCTConvert UIImage:selectedIcon];
+            if (disableIconTint) {
+                iconImageSelected = [[RCTConvert UIImage:selectedIcon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            } else {
+                iconImageSelected = [RCTConvert UIImage:selectedIcon];
+            }
         } else {
             iconImageSelected = [RCTConvert UIImage:icon];
         }
